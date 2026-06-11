@@ -59,10 +59,23 @@ namespace Pathya.Api.Services
                     .Select(f => new
                     {
                         f.NutrientId,
+                        NutrientName = f.Nutrient.Name,
+                        Unit = f.Nutrient.Unit,
                         Amount = x.WeightInGrams * f.AmountPer100g / 100m
                     }))
                 .ToListAsync();
-            return new List<ConsumeNutrientDto>();
+            return result.GroupBy(x => new
+            {
+                x.NutrientId,
+                x.NutrientName,
+                x.Unit
+            })
+                .Select(x => new ConsumeNutrientDto
+                {
+                    Nutrient = x.Key.NutrientName,
+                    Unit = x.Key.Unit,
+                    Amount = x.Sum(y => y.Amount)
+                }).ToList();
         }
     }
 }

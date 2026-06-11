@@ -96,4 +96,16 @@ app.MapGet(
         var result = await requirementService.GetRequirementsAsync(id);
         return Results.Ok(result);
     });
+app.MapGet(
+    "/users/{id}/consumed",
+    async (
+        int id,
+        IFoodLogService service) =>
+    {
+        var result =
+            await service
+                .GetConsumedNutrientsAsync(id);
+
+        return Results.Ok(result);
+    });
 app.Run();
