@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using NutriLens.Api.Data;
@@ -11,9 +12,11 @@ using NutriLens.Api.Data;
 namespace NutriLens.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260611082008_AddFoodEntities")]
+    partial class AddFoodEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,56 +82,6 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Foods");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("FoodLogs");
-                });
-
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLogItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("FoodId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("FoodLogId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("WeightInGrams")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FoodId");
-
-                    b.HasIndex("FoodLogId");
-
-                    b.ToTable("FoodLogItems");
-                });
-
             modelBuilder.Entity("NutriLens.Api.Entities.FoodNutrient", b =>
                 {
                     b.Property<int>("Id")
@@ -137,8 +90,8 @@ namespace NutriLens.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("AmountPer100g")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("AmountPer100g")
+                        .HasColumnType("numeric");
 
                     b.Property<int>("FoodId")
                         .HasColumnType("integer");
@@ -223,36 +176,6 @@ namespace NutriLens.Api.Migrations
                     b.Navigation("Nutrient");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
-                {
-                    b.HasOne("NutriLens.Api.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLogItem", b =>
-                {
-                    b.HasOne("NutriLens.Api.Entities.Food", "Food")
-                        .WithMany()
-                        .HasForeignKey("FoodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NutriLens.Api.Entities.FoodLog", "FoodLog")
-                        .WithMany("Items")
-                        .HasForeignKey("FoodLogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Food");
-
-                    b.Navigation("FoodLog");
-                });
-
             modelBuilder.Entity("NutriLens.Api.Entities.FoodNutrient", b =>
                 {
                     b.HasOne("NutriLens.Api.Entities.Food", "Food")
@@ -275,11 +198,6 @@ namespace NutriLens.Api.Migrations
             modelBuilder.Entity("NutriLens.Api.Entities.Food", b =>
                 {
                     b.Navigation("FoodNutrients");
-                });
-
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

@@ -60,6 +60,19 @@ using (var scope = app.Services.CreateScope())
 
         db.SaveChanges();
     }
+    if (!db.Foods.Any())
+    {
+        db.Foods.AddRange(
+            FoodSeeder.GetFoods());
+
+        db.SaveChanges();
+    }
+    if (!db.FoodNutrients.Any())
+    {
+        db.FoodNutrients.AddRange(
+            FoodNutrientSeeeder.GetFoodNutrients());
+        db.SaveChanges();
+    }
 }
 app.MapGet(
     "/users/{id}/requirements",
