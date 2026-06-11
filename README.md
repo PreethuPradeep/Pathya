@@ -1,8 +1,8 @@
-# NutriLens
+# Pathya
 
 ## Overview
 
-NutriLens is an AI-powered nutrition analysis platform that helps users understand nutrient intake, identify deficiencies, and improve dietary habits.
+Pathya is an AI-powered nutrition analysis platform that helps users understand nutrient intake, identify deficiencies, and improve dietary habits.
 
 ## Goals
 
