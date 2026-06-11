@@ -9,5 +9,7 @@ namespace NutriLens.Api.Data
 
         }
         public DbSet<User> Users => Set<User>();
+        public DbSet<Nutrient> Nutrients => Set<Nutrient>();
+        public DbSet<DailyRequirement> DailyRequirements => Set<DailyRequirement>();
     }
 }

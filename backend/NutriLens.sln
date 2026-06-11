@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{827E0CD3-B72
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NutriLens.Api", "NutriLens.Api", "{2182DDAB-545A-3E06-6E95-05545F404726}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nutrilens.Api", "src\NutriLens.Api\Nutrilens.Api.csproj", "{F9060586-3E58-4AC5-BBA5-31EDF17A93B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NutriLens.Api", "src\NutriLens.Api\NutriLens.Api.csproj", "{F9060586-3E58-4AC5-BBA5-31EDF17A93B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +38,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{2182DDAB-545A-3E06-6E95-05545F404726} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{F9060586-3E58-4AC5-BBA5-31EDF17A93B0} = {2182DDAB-545A-3E06-6E95-05545F404726}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C45D76A-8477-4F45-AD00-66D37E7157CA}
 	EndGlobalSection
 EndGlobal
