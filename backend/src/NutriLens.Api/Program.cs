@@ -68,14 +68,26 @@ using (var scope = app.Services.CreateScope())
     if (!db.Foods.Any())
     {
         db.Foods.AddRange(
-            FoodSeeder.GetFoods());
+            NutritionJsonImporter.GetFoods());
 
         db.SaveChanges();
     }
     if (!db.FoodNutrients.Any())
     {
-        db.FoodNutrients.AddRange(
-            FoodNutrientSeeeder.GetFoodNutrients());
+        var foods = db.Foods.ToList();
+
+        var nutrients =
+            NutritionJsonImporter
+                .GetFoodNutrients(foods);
+
+        db.FoodNutrients.AddRange(nutrients);
+
+        db.SaveChanges();
+    }
+    if (!db.nutrientFoodRecomendations.Any())
+    {
+        db.nutrientFoodRecomendations.AddRange(
+            NutrientFoodRecommendationSeeder.GetNutrientFoodRecomendations());
         db.SaveChanges();
     }
 }
@@ -120,5 +132,12 @@ app.MapGet(
                 .GetAnalysisAsync(id);
 
         return Results.Ok(result);
+    });
+app.MapGet(
+    "/seed-test",
+    () =>
+    {
+        return NutritionJsonImporter
+            .LoadFoods();
     });
 app.Run();

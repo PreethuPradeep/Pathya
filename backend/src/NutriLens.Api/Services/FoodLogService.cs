@@ -39,7 +39,7 @@ namespace Pathya.Api.Services
                 FoodLogId = foodLog.Id,
                 FoodId = request.FoodId,
                 Quantity = request.Quantity,
-                WeightInGrams = weight
+                WeightInGrams = Math.Round(weight,2)
             };
             _context.FoodLogItems.Add(item);
             await _context.SaveChangesAsync();
@@ -74,7 +74,7 @@ namespace Pathya.Api.Services
                 {
                     Nutrient = x.Key.NutrientName,
                     Unit = x.Key.Unit,
-                    Amount = x.Sum(y => y.Amount)
+                    Amount = Math.Round(x.Sum(y => y.Amount),2)
                 }).ToList();
         }
     }

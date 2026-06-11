@@ -15,5 +15,6 @@ namespace Pathya.Api.Data
         public DbSet<FoodNutrient> FoodNutrients => Set<FoodNutrient>();
         public DbSet<FoodLog> FoodLogs => Set<FoodLog>();
         public DbSet<FoodLogItem> FoodLogItems => Set<FoodLogItem>();
+        public DbSet<NutrientFoodRecomendation> nutrientFoodRecomendations => Set<NutrientFoodRecomendation>();
     }
 }
