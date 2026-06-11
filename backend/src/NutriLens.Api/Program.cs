@@ -14,6 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
     builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRequirementService, RequirementService>();
 builder.Services.AddScoped<IFoodLogService, FoodLogService>();
+builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -105,6 +106,18 @@ app.MapGet(
         var result =
             await service
                 .GetConsumedNutrientsAsync(id);
+
+        return Results.Ok(result);
+    });
+app.MapGet(
+    "/users/{id}/analysis",
+    async (
+        int id,
+        IAnalysisService service) =>
+    {
+        var result =
+            await service
+                .GetAnalysisAsync(id);
 
         return Results.Ok(result);
     });
