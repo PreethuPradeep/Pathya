@@ -1,4 +1,4 @@
-﻿namespace NutriLens.Api.Entities
+﻿namespace Pathya.Api.Entities
 {
     public class FoodLogItem
     {

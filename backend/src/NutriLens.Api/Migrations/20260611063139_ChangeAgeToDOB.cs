@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace NutriLens.Api.Migrations
+namespace Pathya.Api.Migrations
 {
     /// <inheritdoc />
     public partial class ChangeAgeToDOB : Migration

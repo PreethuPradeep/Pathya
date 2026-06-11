@@ -1,9 +1,10 @@
-﻿namespace Pathya.Api.DTOs
+﻿
+namespace Pathya.Api.DTOs
 {
-    public class NutrientRequirementDto
+    public class ConsumeNutrientDto
     {
         public string Nutrient { get; set; } = string.Empty;
-        public decimal RequiredAmount { get; set; }
+        public decimal Amount { get; set; }
         public string Unit { get; set; } = string.Empty;
     }
 }

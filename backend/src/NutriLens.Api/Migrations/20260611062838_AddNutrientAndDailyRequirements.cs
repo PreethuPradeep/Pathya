@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace NutriLens.Api.Migrations
+namespace Pathya.Api.Migrations
 {
     /// <inheritdoc />
     public partial class AddNutrientAndDailyRequirements : Migration

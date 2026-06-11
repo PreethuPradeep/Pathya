@@ -1,7 +1,7 @@
-﻿using NutriLens.Api.Entities;
+﻿using Pathya.Api.Entities;
 using System.Reflection.Metadata.Ecma335;
 
-namespace NutriLens.Api.Data
+namespace Pathya.Api.Data
 {
     public static class FoodNutrientSeeeder
     {

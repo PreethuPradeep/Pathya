@@ -1,0 +1,68 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Pathya.Api.Data;
+using Pathya.Api.DTOs;
+using Pathya.Api.Entities;
+
+namespace Pathya.Api.Services
+{
+    public class FoodLogService : IFoodLogService
+    {
+        private readonly ApplicationDbContext _context;
+        public FoodLogService(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+        public async Task AddFoodAsync(CreateFoodLogDto request)
+        {
+            var food = await _context.Foods.FirstOrDefaultAsync(
+                x => x.Id == request.FoodId);
+            if (food is null)
+            {
+                throw new Exception("Food not found");
+            }
+            var weight = food.StandardWeightInGrams * request.Quantity;
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var foodLog = await _context.FoodLogs.FirstOrDefaultAsync(
+                x => x.UserId == request.UserId && x.Date == today);
+            if (foodLog is null)
+            {
+                foodLog = new Entities.FoodLog
+                {
+                    UserId = request.UserId,
+                    Date = today
+                };
+                _context.FoodLogs.Add(foodLog);
+                await _context.SaveChangesAsync();
+            }
+            var item = new FoodLogItem
+            {
+                FoodLogId = foodLog.Id,
+                FoodId = request.FoodId,
+                Quantity = request.Quantity,
+                WeightInGrams = weight
+            };
+            _context.FoodLogItems.Add(item);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<ConsumeNutrientDto>> GetConsumedNutrientsAsync(int userId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            var result = await _context.FoodLogItems
+                .Include(x => x.Food)
+                .Include(x => x.FoodLog)
+                .Where(x =>
+                    x.FoodLog.UserId == userId &&
+                    x.FoodLog.Date == today)
+                .SelectMany(x =>
+                    _context.FoodNutrients.Where(f => f.FoodId == x.FoodId)
+                    .Select(f => new
+                    {
+                        f.NutrientId,
+                        Amount = x.WeightInGrams * f.AmountPer100g / 100m
+                    }))
+                .ToListAsync();
+            return new List<ConsumeNutrientDto>();
+        }
+    }
+}

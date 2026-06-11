@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NutriLens.Api.Data;
+using Pathya.Api.Data;
 
 #nullable disable
 
-namespace NutriLens.Api.Migrations
+namespace Pathya.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace NutriLens.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("NutriLens.Api.Entities.DailyRequirement", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.DailyRequirement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -59,7 +59,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("DailyRequirements");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.Food", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.Food", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -79,7 +79,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Foods");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodLog", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("FoodLogs");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLogItem", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodLogItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("FoodLogItems");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodNutrient", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodNutrient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -155,7 +155,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("FoodNutrients");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.Nutrient", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.Nutrient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -176,7 +176,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Nutrients");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.User", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -212,9 +212,9 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.DailyRequirement", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.DailyRequirement", b =>
                 {
-                    b.HasOne("NutriLens.Api.Entities.Nutrient", "Nutrient")
+                    b.HasOne("Pathya.Api.Entities.Nutrient", "Nutrient")
                         .WithMany()
                         .HasForeignKey("NutrientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -223,9 +223,9 @@ namespace NutriLens.Api.Migrations
                     b.Navigation("Nutrient");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodLog", b =>
                 {
-                    b.HasOne("NutriLens.Api.Entities.User", "User")
+                    b.HasOne("Pathya.Api.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -234,15 +234,15 @@ namespace NutriLens.Api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLogItem", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodLogItem", b =>
                 {
-                    b.HasOne("NutriLens.Api.Entities.Food", "Food")
+                    b.HasOne("Pathya.Api.Entities.Food", "Food")
                         .WithMany()
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NutriLens.Api.Entities.FoodLog", "FoodLog")
+                    b.HasOne("Pathya.Api.Entities.FoodLog", "FoodLog")
                         .WithMany("Items")
                         .HasForeignKey("FoodLogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -253,15 +253,15 @@ namespace NutriLens.Api.Migrations
                     b.Navigation("FoodLog");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodNutrient", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodNutrient", b =>
                 {
-                    b.HasOne("NutriLens.Api.Entities.Food", "Food")
+                    b.HasOne("Pathya.Api.Entities.Food", "Food")
                         .WithMany("FoodNutrients")
                         .HasForeignKey("FoodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NutriLens.Api.Entities.Nutrient", "Nutrient")
+                    b.HasOne("Pathya.Api.Entities.Nutrient", "Nutrient")
                         .WithMany()
                         .HasForeignKey("NutrientId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,12 +272,12 @@ namespace NutriLens.Api.Migrations
                     b.Navigation("Nutrient");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.Food", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.Food", b =>
                 {
                     b.Navigation("FoodNutrients");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.FoodLog", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.FoodLog", b =>
                 {
                     b.Navigation("Items");
                 });

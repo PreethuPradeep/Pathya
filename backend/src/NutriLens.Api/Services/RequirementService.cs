@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NutriLens.Api.Data;
-using NutriLens.Api.DTOs;
+using Pathya.Api.Data;
+using Pathya.Api.DTOs;
 
-namespace NutriLens.Api.Services
+namespace Pathya.Api.Services
 {
     public class RequirementService : IRequirementService
     {

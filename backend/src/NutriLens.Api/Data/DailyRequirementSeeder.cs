@@ -1,6 +1,6 @@
-﻿using NutriLens.Api.Entities;
+﻿using Pathya.Api.Entities;
 
-namespace NutriLens.Api.Data
+namespace Pathya.Api.Data
 {
     public static class DailyRequirementSeeder
     {

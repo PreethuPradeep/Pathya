@@ -1,0 +1,6 @@
+@Pathya.Api_HostAddress = http://localhost:5285
+
+GET {{Pathya.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

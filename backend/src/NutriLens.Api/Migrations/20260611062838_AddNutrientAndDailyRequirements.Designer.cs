@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using NutriLens.Api.Data;
+using Pathya.Api.Data;
 
 #nullable disable
 
-namespace NutriLens.Api.Migrations
+namespace Pathya.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20260611062838_AddNutrientAndDailyRequirements")]
@@ -24,7 +24,7 @@ namespace NutriLens.Api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("NutriLens.Api.Entities.DailyRequirement", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.DailyRequirement", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("DailyRequirements");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.Nutrient", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.Nutrient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,7 +82,7 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Nutrients");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.User", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,9 +118,9 @@ namespace NutriLens.Api.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("NutriLens.Api.Entities.DailyRequirement", b =>
+            modelBuilder.Entity("Pathya.Api.Entities.DailyRequirement", b =>
                 {
-                    b.HasOne("NutriLens.Api.Entities.Nutrient", "Nutrient")
+                    b.HasOne("Pathya.Api.Entities.Nutrient", "Nutrient")
                         .WithMany()
                         .HasForeignKey("NutrientId")
                         .OnDelete(DeleteBehavior.Cascade)

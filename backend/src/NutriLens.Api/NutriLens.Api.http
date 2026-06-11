@@ -1,6 +1,0 @@
-@NutriLens.Api_HostAddress = http://localhost:5285
-
-GET {{NutriLens.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

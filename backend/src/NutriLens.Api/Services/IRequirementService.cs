@@ -1,6 +1,6 @@
-﻿using NutriLens.Api.DTOs;
+﻿using Pathya.Api.DTOs;
 
-namespace NutriLens.Api.Services
+namespace Pathya.Api.Services
 {
     public interface IRequirementService
     {

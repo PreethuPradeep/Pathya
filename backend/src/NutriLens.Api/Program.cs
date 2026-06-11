@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NutriLens.Api.Data;
-using NutriLens.Api.Entities;
-using NutriLens.Api.Services;
+using Pathya.Api.Data;
+using Pathya.Api.DTOs;
+using Pathya.Api.Entities;
+using Pathya.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
     builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IRequirementService, RequirementService>();
+builder.Services.AddScoped<IFoodLogService, FoodLogService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -26,10 +29,11 @@ app.MapGet("/health", () =>
     return Results.Ok(new
     {
         Status = "Healthy",
-        Application = "NutriLens",
+        Application = "Pathya",
         TimeStamp = DateTime.UtcNow
     });
 });
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -74,6 +78,15 @@ using (var scope = app.Services.CreateScope())
         db.SaveChanges();
     }
 }
+app.MapPost(
+    "/food-log",
+    async (
+        [FromBody] CreateFoodLogDto request,
+        [FromServices] IFoodLogService service) =>
+    {
+        await service.AddFoodAsync(request);
+        return Results.Ok();
+    });
 app.MapGet(
     "/users/{id}/requirements",
     async (

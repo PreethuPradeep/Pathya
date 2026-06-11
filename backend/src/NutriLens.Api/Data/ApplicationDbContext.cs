@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NutriLens.Api.Entities;
-namespace NutriLens.Api.Data
+using Pathya.Api.Entities;
+namespace Pathya.Api.Data
 {
     public class ApplicationDbContext : DbContext
     {
