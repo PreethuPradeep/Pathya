@@ -17,6 +17,7 @@ builder.Services.AddScoped<IFoodLogService, FoodLogService>();
 builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 builder.Services.AddScoped<INutrientRecommendationService, NutrientRecommendationService>();
 builder.Services.AddScoped<IRecommendationService, RecomendationService>();
+builder.Services.AddScoped<IPatternService, PatternService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -163,6 +164,19 @@ app.MapGet(
         var result =
             await service
                 .GetRecommendationsAsync(id);
+
+        return Results.Ok(result);
+    });
+app.MapGet(
+    "/users/{id}/patterns",
+    async (
+        int id,
+        [FromServices]
+        IPatternService service) =>
+    {
+        var result =
+            await service
+                .GetPatternsAsync(id);
 
         return Results.Ok(result);
     });
