@@ -19,6 +19,9 @@ builder.Services.AddScoped<INutrientRecommendationService, NutrientRecommendatio
 builder.Services.AddScoped<IRecommendationService, RecomendationService>();
 builder.Services.AddScoped<IPatternService, PatternService>();
 builder.Services.AddScoped<IWeeklyReviewService, WeeklyReviewService>();
+builder.Services.AddScoped<
+    INutrientImpactService,
+    NutrientImpactService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -92,6 +95,13 @@ using (var scope = app.Services.CreateScope())
     {
         db.nutrientFoodRecomendations.AddRange(
             NutrientFoodRecommendationSeeder.GetNutrientFoodRecomendations());
+        db.SaveChanges();
+    }
+    if (!db.NutrientImpacts.Any())
+    {
+        db.NutrientImpacts.AddRange(
+            NutrientImpactSeeder.GetImpacts());
+
         db.SaveChanges();
     }
 }
@@ -185,6 +195,19 @@ app.MapGet("/users/{id}/weekly-review",
     async (int id, IWeeklyReviewService service) =>
     {
         var result = await service.GetWeeklyReviewAsync(id);
+        return Results.Ok(result);
+    });
+app.MapGet(
+    "/nutrients/{name}/insight",
+    async (
+        string name,
+        [FromServices]
+        INutrientImpactService service) =>
+    {
+        var result =
+            await service
+                .GetInsightAsync(name);
+
         return Results.Ok(result);
     });
 app.Run();
