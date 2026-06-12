@@ -1,5 +1,6 @@
 ﻿using Pathya.Api.Data;
 using Pathya.Api.DTOs;
+using Pathya.Api.Entities;
 
 namespace Pathya.Api.Services
 {
@@ -7,14 +8,30 @@ namespace Pathya.Api.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IAnalysisService _analysisService;
-        public RecomendationService(ApplicationDbContext context, IAnalysisService analysisService)
+        private readonly INutrientRecommendationService _nutrientRecommendationService;
+        public RecomendationService(ApplicationDbContext context, IAnalysisService analysisService, INutrientRecommendationService nutrientRecommendationService)
         {
             _analysisService = analysisService;
+            _nutrientRecommendationService = nutrientRecommendationService;
             _context = context;
         }
-        public Task<List<NutrientRecomendationDto>> GetRecommendationsAsync(int userId)
+        public async Task<List<NutrientRecomendationDto>> GetRecommendationsAsync(int userId)
         {
-            throw new NotImplementedException();
+            var analysis = await _analysisService.GetAnalysisAsync(userId);
+            var lowNutrients = analysis.Where(x => x.Remaining > 0).ToList();
+            var result = new List<NutrientRecomendationDto>();
+            foreach (var nutrient in lowNutrients)
+            {
+                var foods = await _nutrientRecommendationService.GetFoodsForNutrientAsync(nutrient.Nutrient);
+                result.Add(new NutrientRecomendationDto
+                {
+                    Nutrient = nutrient.Nutrient,
+                    Remaining = nutrient.Remaining,
+                    Foods = foods.Select(x => x.Food).ToList()
+
+                });
+            }
+            return result;
         }
     }
 }

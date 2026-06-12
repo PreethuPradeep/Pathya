@@ -15,6 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 builder.Services.AddScoped<IRequirementService, RequirementService>();
 builder.Services.AddScoped<IFoodLogService, FoodLogService>();
 builder.Services.AddScoped<IAnalysisService, AnalysisService>();
+builder.Services.AddScoped<INutrientRecommendationService, NutrientRecommendationService>();
+builder.Services.AddScoped<IRecommendationService, RecomendationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -139,5 +141,29 @@ app.MapGet(
     {
         return NutritionJsonImporter
             .LoadFoods();
+    });
+app.MapGet(
+    "/nutrients/{name}/foods",
+    async (
+        string name,
+        INutrientRecommendationService service) =>
+    {
+        var result =
+            await service
+                .GetFoodsForNutrientAsync(name);
+
+        return Results.Ok(result);
+    });
+app.MapGet(
+    "/users/{id}/recommendations",
+    async (
+        int id,
+        [FromServices] IRecommendationService service) =>
+    {
+        var result =
+            await service
+                .GetRecommendationsAsync(id);
+
+        return Results.Ok(result);
     });
 app.Run();
