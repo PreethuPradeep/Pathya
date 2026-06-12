@@ -18,6 +18,7 @@ builder.Services.AddScoped<IAnalysisService, AnalysisService>();
 builder.Services.AddScoped<INutrientRecommendationService, NutrientRecommendationService>();
 builder.Services.AddScoped<IRecommendationService, RecomendationService>();
 builder.Services.AddScoped<IPatternService, PatternService>();
+builder.Services.AddScoped<IWeeklyReviewService, WeeklyReviewService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -178,6 +179,12 @@ app.MapGet(
             await service
                 .GetPatternsAsync(id);
 
+        return Results.Ok(result);
+    });
+app.MapGet("/users/{id}/weekly-review",
+    async (int id, IWeeklyReviewService service) =>
+    {
+        var result = await service.GetWeeklyReviewAsync(id);
         return Results.Ok(result);
     });
 app.Run();
