@@ -22,6 +22,7 @@ builder.Services.AddScoped<IWeeklyReviewService, WeeklyReviewService>();
 builder.Services.AddScoped<
     INutrientImpactService,
     NutrientImpactService>();
+builder.Services.AddScoped<IInsightService, InsightService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -209,5 +210,14 @@ app.MapGet(
                 .GetInsightAsync(name);
 
         return Results.Ok(result);
+    });
+app.MapGet(
+    "/users/{id}/insights",
+    async (
+        int id,
+        [FromServices] IInsightService service) =>
+    {
+        return Results.Ok(
+            await service.GetInsights(id));
     });
 app.Run();
