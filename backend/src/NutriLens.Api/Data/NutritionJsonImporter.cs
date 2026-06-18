@@ -92,6 +92,46 @@ namespace Pathya.Api.Data
                         NutrientId = 6,
                         AmountPer100g = item.Fiber
                     });
+
+                result.Add(
+                    new FoodNutrient
+                    {
+                        FoodId = food.Id,
+                        NutrientId = 4,
+                        AmountPer100g = item.VitaminD
+                    });
+
+                result.Add(
+                    new FoodNutrient
+                    {
+                        FoodId = food.Id,
+                        NutrientId = 5,
+                        AmountPer100g = item.VitaminB12
+                    });
+
+                result.Add(
+                    new FoodNutrient
+                    {
+                        FoodId = food.Id,
+                        NutrientId = 7,
+                        AmountPer100g = item.Folate
+                    });
+
+                result.Add(
+                    new FoodNutrient
+                    {
+                        FoodId = food.Id,
+                        NutrientId = 8,
+                        AmountPer100g = item.Magnesium
+                    });
+
+                result.Add(
+                    new FoodNutrient
+                    {
+                        FoodId = food.Id,
+                        NutrientId = 14,
+                        AmountPer100g = item.Zinc
+                    });
             }
 
             return result;

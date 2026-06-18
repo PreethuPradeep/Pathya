@@ -23,6 +23,9 @@ builder.Services.AddScoped<
     INutrientImpactService,
     NutrientImpactService>();
 builder.Services.AddScoped<IInsightService, InsightService>();
+builder.Services.AddScoped<
+    ICoverageService,
+    CoverageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -219,5 +222,16 @@ app.MapGet(
     {
         return Results.Ok(
             await service.GetInsights(id));
+    });
+app.MapGet(
+    "/users/{id}/coverage",
+    async (
+        int id,
+        [FromServices]
+        ICoverageService service) =>
+    {
+        return Results.Ok(
+            await service
+                .GetCoverageAsync(id));
     });
 app.Run();

@@ -4,7 +4,12 @@
     "protein": 13.0,
     "iron": 1.8,
     "calcium": 50,
-    "fiber": 0
+    "fiber": 0,
+    "vitaminD": 87,
+    "vitaminB12": 1.1,
+    "folate": 47,
+    "magnesium": 10,
+    "zinc": 1.3
   },
   {
     "food": "Banana",
@@ -25,21 +30,36 @@
     "protein": 3.4,
     "iron": 0.03,
     "calcium": 125,
-    "fiber": 0
+    "fiber": 0,
+    "vitaminD": 49,
+    "vitaminB12": 0.5,
+    "folate": 5,
+    "magnesium": 11,
+    "zinc": 0.4
   },
   {
     "food": "Curd",
     "protein": 3.5,
     "iron": 0.1,
     "calcium": 120,
-    "fiber": 0
+    "fiber": 0,
+    "vitaminD": 44,
+    "vitaminB12": 0.4,
+    "folate": 7,
+    "magnesium": 11,
+    "zinc": 0.6
   },
   {
     "food": "Paneer",
     "protein": 18.0,
     "iron": 0.2,
     "calcium": 208,
-    "fiber": 0
+    "fiber": 0,
+    "vitaminD": 20,
+    "vitaminB12": 0.8,
+    "folate": 18,
+    "magnesium": 20,
+    "zinc": 2.6
   },
   {
     "food": "Rice",
@@ -67,14 +87,24 @@
     "protein": 24.0,
     "iron": 8.2,
     "calcium": 143,
-    "fiber": 25.0
+    "fiber": 25.0,
+    "vitaminD": 0,
+    "vitaminB12": 0,
+    "folate": 394,
+    "magnesium": 140,
+    "zinc": 2.8
   },
   {
     "food": "Chickpeas",
     "protein": 19.0,
     "iron": 6.2,
     "calcium": 105,
-    "fiber": 17.0
+    "fiber": 17.0,
+    "vitaminD": 0,
+    "vitaminB12": 0,
+    "folate": 557,
+    "magnesium": 115,
+    "zinc": 3.4
   },
   {
     "food": "Moong Dal",
@@ -95,14 +125,24 @@
     "protein": 2.9,
     "iron": 2.7,
     "calcium": 99,
-    "fiber": 2.2
+    "fiber": 2.2,
+    "vitaminD": 0,
+    "vitaminB12": 0,
+    "folate": 194,
+    "magnesium": 79,
+    "zinc": 0.5
   },
   {
     "food": "Ragi",
     "protein": 7.3,
     "iron": 3.9,
     "calcium": 344,
-    "fiber": 11.5
+    "fiber": 11.5,
+    "vitaminD": 0,
+    "vitaminB12": 0,
+    "folate": 35,
+    "magnesium": 137,
+    "zinc": 2.3
   },
   {
     "food": "Apple",
@@ -123,14 +163,24 @@
     "protein": 22.0,
     "iron": 1.0,
     "calcium": 20,
-    "fiber": 0
+    "fiber": 0,
+    "vitaminD": 526,
+    "vitaminB12": 2.5,
+    "folate": 9,
+    "magnesium": 30,
+    "zinc": 0.8
   },
   {
     "food": "Soy Chunks",
     "protein": 52.0,
     "iron": 15.7,
     "calcium": 350,
-    "fiber": 13.0
+    "fiber": 13.0,
+    "vitaminD": 0,
+    "vitaminB12": 0,
+    "folate": 300,
+    "magnesium": 280,
+    "zinc": 4.0
   },
   {
     "food": "Groundnuts",

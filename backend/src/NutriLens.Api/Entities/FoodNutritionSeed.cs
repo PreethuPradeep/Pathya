@@ -11,5 +11,14 @@
         public decimal Calcium { get; set; }
 
         public decimal Fiber { get; set; }
+        public decimal VitaminD { get; set; }
+
+        public decimal VitaminB12 { get; set; }
+
+        public decimal Folate { get; set; }
+
+        public decimal Magnesium { get; set; }
+
+        public decimal Zinc { get; set; }
     }
 }

@@ -43,6 +43,46 @@ namespace Pathya.Api.Data
 
                     RecommendationText =
                     "Increase fruits, vegetables and legumes."
+                },
+
+                new NutrientImpact
+                {
+                    NutrientName = "Vitamin D",
+                    Supports = "Bone health, immunity and muscle function",
+                    RecommendationText =
+                        "Consider sunlight exposure and vitamin D rich foods."
+                },
+
+                new NutrientImpact
+                {
+                    NutrientName = "Vitamin B12",
+                    Supports = "Nervous system health and energy metabolism",
+                    RecommendationText =
+                        "Include animal foods or fortified foods regularly."
+                },
+
+                new NutrientImpact
+                {
+                    NutrientName = "Folate",
+                    Supports = "Cell growth and healthy blood formation",
+                    RecommendationText =
+                        "Increase legumes and leafy vegetables."
+                },
+
+                new NutrientImpact
+                {
+                    NutrientName = "Magnesium",
+                    Supports = "Muscle function, nerve function and energy production",
+                    RecommendationText =
+                        "Add nuts, legumes and whole grains."
+                },
+
+                new NutrientImpact
+                {
+                    NutrientName = "Zinc",
+                    Supports = "Immune function and wound healing",
+                    RecommendationText =
+                        "Include legumes, dairy and protein-rich foods."
                 }
             };
         }

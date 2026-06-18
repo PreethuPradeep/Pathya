@@ -13,7 +13,15 @@ namespace Pathya.Api.Data
                 new Nutrient { Name = "Calcium", Unit = "mg" },
                 new Nutrient { Name = "Vitamin D", Unit = "IU" },
                 new Nutrient { Name = "Vitamin B12", Unit = "mcg" },
-                new Nutrient { Name = "Fiber", Unit = "g" }
+                new Nutrient { Name = "Fiber", Unit = "g" },
+                new Nutrient { Name = "Folate", Unit = "mcg" },
+                new Nutrient { Name = "Magnesium", Unit = "mg" },
+                new Nutrient { Name = "Carbohydrate", Unit = "g" },
+                new Nutrient { Name = "Fat", Unit = "g" },
+                new Nutrient { Name = "Sodium", Unit = "mg" },
+                new Nutrient { Name = "Added Sugar", Unit = "g" },
+                new Nutrient { Name = "Saturated Fat", Unit = "g" },
+                new Nutrient { Name = "Zinc", Unit = "mg" }
             };
         }
     }
