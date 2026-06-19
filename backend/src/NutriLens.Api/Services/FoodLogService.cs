@@ -8,9 +8,11 @@ namespace Pathya.Api.Services
     public class FoodLogService : IFoodLogService
     {
         private readonly ApplicationDbContext _context;
-        public FoodLogService(ApplicationDbContext context)
+        private readonly IDailyNutritionService _dailyNutritionService;
+        public FoodLogService(ApplicationDbContext context, IDailyNutritionService dailyNutritionService)
         {
             _context = context;
+            _dailyNutritionService = dailyNutritionService;
         }
         public async Task AddFoodAsync(CreateFoodLogDto request)
         {
@@ -47,35 +49,36 @@ namespace Pathya.Api.Services
 
         public async Task<List<ConsumeNutrientDto>> GetConsumedNutrientsAsync(int userId)
         {
-            var today = DateOnly.FromDateTime(DateTime.Today);
-            var result = await _context.FoodLogItems
-                .Include(x => x.Food)
-                .Include(x => x.FoodLog)
-                .Where(x =>
-                    x.FoodLog.UserId == userId &&
-                    x.FoodLog.Date == today)
-                .SelectMany(x =>
-                    _context.FoodNutrients.Where(f => f.FoodId == x.FoodId)
-                    .Select(f => new
-                    {
-                        f.NutrientId,
-                        NutrientName = f.Nutrient.Name,
-                        Unit = f.Nutrient.Unit,
-                        Amount = x.WeightInGrams * f.AmountPer100g / 100m
-                    }))
-                .ToListAsync();
-            return result.GroupBy(x => new
-            {
-                x.NutrientId,
-                x.NutrientName,
-                x.Unit
-            })
-                .Select(x => new ConsumeNutrientDto
-                {
-                    Nutrient = x.Key.NutrientName,
-                    Unit = x.Key.Unit,
-                    Amount = Math.Round(x.Sum(y => y.Amount),2)
-                }).ToList();
+            //var today = DateOnly.FromDateTime(DateTime.Today);
+            //var result = await _context.FoodLogItems
+            //    .Include(x => x.Food)
+            //    .Include(x => x.FoodLog)
+            //    .Where(x =>
+            //        x.FoodLog.UserId == userId &&
+            //        x.FoodLog.Date == today)
+            //    .SelectMany(x =>
+            //        _context.FoodNutrients.Where(f => f.FoodId == x.FoodId)
+            //        .Select(f => new
+            //        {
+            //            f.NutrientId,
+            //            NutrientName = f.Nutrient.Name,
+            //            Unit = f.Nutrient.Unit,
+            //            Amount = x.WeightInGrams * f.AmountPer100g / 100m
+            //        }))
+            //    .ToListAsync();
+            //return result.GroupBy(x => new
+            //{
+            //    x.NutrientId,
+            //    x.NutrientName,
+            //    x.Unit
+            //})
+            //    .Select(x => new ConsumeNutrientDto
+            //    {
+            //        Nutrient = x.Key.NutrientName,
+            //        Unit = x.Key.Unit,
+            //        Amount = Math.Round(x.Sum(y => y.Amount),2)
+            //    }).ToList();
+            return await _dailyNutritionService.GetDailyNutrientsAsync(userId, DateOnly.FromDateTime(DateTime.Today));
         }
     }
 }

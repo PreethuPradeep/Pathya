@@ -19,13 +19,10 @@ builder.Services.AddScoped<INutrientRecommendationService, NutrientRecommendatio
 builder.Services.AddScoped<IRecommendationService, RecomendationService>();
 builder.Services.AddScoped<IPatternService, PatternService>();
 builder.Services.AddScoped<IWeeklyReviewService, WeeklyReviewService>();
-builder.Services.AddScoped<
-    INutrientImpactService,
-    NutrientImpactService>();
+builder.Services.AddScoped<INutrientImpactService,NutrientImpactService>();
 builder.Services.AddScoped<IInsightService, InsightService>();
-builder.Services.AddScoped<
-    ICoverageService,
-    CoverageService>();
+builder.Services.AddScoped<ICoverageService, CoverageService>();
+builder.Services.AddScoped<IDailyNutritionService,DailyNutritionService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -233,5 +230,19 @@ app.MapGet(
         return Results.Ok(
             await service
                 .GetCoverageAsync(id));
+    });
+app.MapGet(
+    "/users/{id}/daily/{date}",
+    async (
+        int id,
+        DateOnly date,
+        [FromServices]
+        IDailyNutritionService service) =>
+    {
+        return Results.Ok(
+            await service
+                .GetDailyNutrientsAsync(
+                    id,
+                    date));
     });
 app.Run();
