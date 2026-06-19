@@ -6,19 +6,19 @@ namespace Pathya.Api.Services
     public class AnalysisService : IAnalysisService
     {
         private readonly ApplicationDbContext _context;
-        private readonly IFoodLogService _foodLogService;
+        private readonly IDailyNutritionService _dailyNutritionService;
         private readonly IRequirementService _requirementService;
-        public AnalysisService(ApplicationDbContext context, IFoodLogService foodLogService, IRequirementService requirementService)
+        public AnalysisService(ApplicationDbContext context, IDailyNutritionService dailyNutritionService, IRequirementService requirementService)
         {
             _context = context;
-            _foodLogService = foodLogService;
+            _dailyNutritionService = dailyNutritionService;
             _requirementService = requirementService;
             
         }
         public async Task<List<NutrientAnalysisDto>> GetAnalysisAsync(int userId)
         {
             var requirements = await _requirementService.GetRequirementsAsync(userId);
-            var consumed = await _foodLogService.GetConsumedNutrientsAsync(userId);
+            var consumed = await _dailyNutritionService.GetDailyNutrientsAsync(userId, DateOnly.FromDateTime(DateTime.Today));
             var consumedLookup = consumed.ToDictionary(x => x.Nutrient, x => x);
             var analysis = requirements.Select(r =>
             {

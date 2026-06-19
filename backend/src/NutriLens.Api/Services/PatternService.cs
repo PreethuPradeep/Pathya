@@ -9,13 +9,16 @@ namespace Pathya.Api.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly IRequirementService _requirementService;
+        private readonly IDailyNutritionService _dailyNutritionService;
 
         public PatternService(
             ApplicationDbContext context,
-            IRequirementService requirementService)
+            IRequirementService requirementService,
+            IDailyNutritionService dailyNutritionService)
         {
             _context = context;
             _requirementService = requirementService;
+            _dailyNutritionService = dailyNutritionService;
         }
 
         public async Task<List<PatternDto>>
@@ -35,117 +38,44 @@ namespace Pathya.Api.Services
                 DateOnly.FromDateTime(
                     DateTime.Today);
 
-            var foodLogItems =
-                await _context.FoodLogItems
-                    .Include(x => x.FoodLog)
-                    .Where(x =>
-                        x.FoodLog.UserId == userId &&
-                        x.FoodLog.Date >= startDate &&
-                        x.FoodLog.Date <= endDate)
-                    .ToListAsync();
-
-            var foodNutrients =
-                await _context.FoodNutrients
-                    .Include(x => x.Nutrient)
-                    .ToListAsync();
-
-            foreach (var requirement in requirements)
+            foreach( var requirement in requirements)
             {
-                result.Add(
-                    BuildPattern(
-                        requirement,
-                        foodLogItems,
-                        foodNutrients,
-                        startDate,
-                        endDate));
+                var daysBelowTarget = 0;
+                for ( var date = startDate; date <= endDate; date = date.AddDays(1))
+                {
+                    var nutrients = await _dailyNutritionService.GetDailyNutrientsAsync(userId, date);
+                    var consumed = nutrients.FirstOrDefault(x => x.Nutrient == requirement.Nutrient);
+                    var amountConsumed = consumed?.Amount ?? 0;
+                    if (amountConsumed < requirement.RequiredAmount)
+                    {
+                        daysBelowTarget++;
+                    }
+                }
+                string pattern;
+                if(daysBelowTarget >= 20)
+                {
+                    pattern = "Frequently below target";
+                }
+                else if (daysBelowTarget >= 10)
+                {
+                    pattern =
+                        "Occasionally below target";
+                }
+                else
+                {
+                    pattern =
+                        "Generally adequate";
+                }
+                result.Add(new PatternDto
+                {
+                    Nutrient = requirement.Nutrient,
+                    DaysBelowTarget = daysBelowTarget,
+                    Pattern = pattern
+                });
             }
-
             return result;
         }
 
-        private PatternDto BuildPattern(
-            NutrientRequirementDto requirement,
-            List<FoodLogItem> foodLogItems,
-            List<FoodNutrient> foodNutrients,
-            DateOnly startDate,
-            DateOnly endDate)
-        {
-            var daysBelowTarget = 0;
-            var loggedDays = 0;
-
-            for (
-                var date = startDate;
-                date <= endDate;
-                date = date.AddDays(1))
-            {
-                var dailyItems =
-                    foodLogItems
-                        .Where(x =>
-                            x.FoodLog.Date == date)
-                        .ToList();
-
-                if (!dailyItems.Any())
-                {
-                    continue;
-                }
-
-                loggedDays++;
-
-                decimal consumed = 0;
-
-                foreach (var item in dailyItems)
-                {
-                    var nutrient =
-                        foodNutrients
-                            .FirstOrDefault(x =>
-                                x.FoodId == item.FoodId &&
-                                x.Nutrient.Name ==
-                                    requirement.Nutrient);
-
-                    if (nutrient == null)
-                    {
-                        continue;
-                    }
-
-                    consumed +=
-                        item.WeightInGrams *
-                        nutrient.AmountPer100g /
-                        100m;
-                }
-
-                if (consumed < requirement.RequiredAmount)
-                {
-                    daysBelowTarget++;
-                }
-            }
-
-            var percentageBelow =
-                loggedDays == 0
-                    ? 0
-                    : (decimal)daysBelowTarget /
-                      loggedDays * 100;
-
-            string pattern;
-
-            if (percentageBelow >= 70)
-            {
-                pattern = "Frequently below target";
-            }
-            else if (percentageBelow >= 30)
-            {
-                pattern = "Occasionally below target";
-            }
-            else
-            {
-                pattern = "Generally adequate";
-            }
-
-            return new PatternDto
-            {
-                Nutrient = requirement.Nutrient,
-                DaysBelowTarget = daysBelowTarget,
-                Pattern = pattern
-            };
-        }
+        
     }
 }
