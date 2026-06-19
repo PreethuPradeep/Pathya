@@ -9,5 +9,7 @@
         public string WhyItMatters { get; set; } = "";
 
         public string WhatToDo { get; set; } = "";
+
+        public string Severity { get; set; } = "";
     }
 }
