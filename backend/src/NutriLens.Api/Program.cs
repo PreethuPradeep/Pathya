@@ -23,6 +23,8 @@ builder.Services.AddScoped<INutrientImpactService,NutrientImpactService>();
 builder.Services.AddScoped<IInsightService, InsightService>();
 builder.Services.AddScoped<ICoverageService, CoverageService>();
 builder.Services.AddScoped<IDailyNutritionService,DailyNutritionService>();
+builder.Services.AddScoped<ITrendService,TrendService>();
+builder.Services.AddScoped<IGapRecommendationService, GapRecomendationService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -244,5 +246,88 @@ app.MapGet(
                 .GetDailyNutrientsAsync(
                     id,
                     date));
+    });
+app.MapGet(
+    "/users/{id}/trends",
+    async (
+        int id,
+        [FromServices]
+        ITrendService service) =>
+    {
+        var result =
+            await service
+                .GetTrendsAsync(id);
+
+        return Results.Ok(result);
+    });
+app.MapPost(
+    "/seed-trend-data",
+    async (
+        ApplicationDbContext db) =>
+    {
+        for (int i = 13; i >= 7; i--)
+        {
+            var log =
+                new FoodLog
+                {
+                    UserId = 1,
+                    Date =
+                        DateOnly.FromDateTime(
+                            DateTime.Today.AddDays(-i))
+                };
+
+            db.FoodLogs.Add(log);
+            await db.SaveChangesAsync();
+
+            db.FoodLogItems.Add(
+                new FoodLogItem
+                {
+                    FoodLogId = log.Id,
+                    FoodId = 7, // Rice
+                    WeightInGrams = 100
+                });
+        }
+        for (int i = 6; i >= 0; i--)
+        {
+            var log =
+                new FoodLog
+                {
+                    UserId = 1,
+                    Date =
+                        DateOnly.FromDateTime(
+                            DateTime.Today.AddDays(-i))
+                };
+
+            db.FoodLogs.Add(log);
+            await db.SaveChangesAsync();
+
+            db.FoodLogItems.Add(
+                new FoodLogItem
+                {
+                    FoodLogId = log.Id,
+                    FoodId = 19, // Soy Chunks
+                    WeightInGrams = 100
+                });
+
+            db.FoodLogItems.Add(
+                new FoodLogItem
+                {
+                    FoodLogId = log.Id,
+                    FoodId = 10, // Rajma
+                    WeightInGrams = 100
+                });
+        }
+    });
+app.MapGet(
+    "/users/{id}/gap-recommendations",
+    async (
+        int id,
+        [FromServices]
+        IGapRecommendationService service) =>
+    {
+        return Results.Ok(
+            await service
+                .GetGapRecommednationsAsync(
+                    id));
     });
 app.Run();
