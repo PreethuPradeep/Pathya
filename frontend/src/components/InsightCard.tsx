@@ -1,6 +1,6 @@
 import { Insight } from "@/types/Insight";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 interface Props {
     insight: Insight;
@@ -9,6 +9,10 @@ interface Props {
 export default function InsightCard({
     insight
 }: Props) {
+    const severityColor =
+    insight.severity === "High"
+        ? "destructive"
+        : "secondary";
     return (
         <Card>
             <CardHeader>
@@ -17,7 +21,7 @@ export default function InsightCard({
                         {insight.nutrient}
                     </CardTitle>
 
-                    <Badge>
+                    <Badge variant={severityColor}>
                         {insight.severity}
                     </Badge>
                 </div>

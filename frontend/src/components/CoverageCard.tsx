@@ -1,12 +1,13 @@
-import * as Progress from "@radix-ui/react-progress";
+import { Progress } from "@radix-ui/react-progress";
 import { Card, CardHeader, CardTitle, CardContent } from "./ui/card";
+import { NutritionCoverage } from "@/types/NutritionCoverage";
 
 interface Props {
-    score: number;
+    coverage: NutritionCoverage;
 }
 
 export default function CoverageCard({
-    score
+    coverage
 }: Props){
     return (
         <Card>
@@ -16,19 +17,47 @@ export default function CoverageCard({
                 </CardTitle>
             </CardHeader>
 
-            <CardContent>
-                <div className="space-y-4">
-                    <p className="text-4xl font-bold">
-                        {score}%
-                    </p>
+            <CardContent className="space-y-4">
 
-                    <Progress.Root className="h-2 overflow-hidden rounded-full bg-slate-200">
-                        <Progress.Indicator
-                            className="h-full bg-sky-500 transition-all"
-                            style={{ transform: `translateX(-${100 - score}%)` }}
-                        />
-                    </Progress.Root>
-                </div>
+                <p className="text-5xl font-bold">
+                    {coverage.coveragePercentage}%
+                </p>
+
+                <Progress
+                    value={
+                        Number(
+                            coverage.coveragePercentage
+                        )
+                    }
+                />
+
+                <p className="text-sm text-muted-foreground">
+                    {coverage.metNutrients}
+                    {" / "}
+                    {coverage.trackedNutrients}
+                    {" nutrients covered"}
+                </p>
+
+                {
+                    coverage.missingNutrients.length > 0 && (
+                        <div>
+                            <p className="font-medium mb-2">
+                                Missing Nutrients
+                            </p>
+
+                            <div className="space-y-1">
+                                {coverage
+                                    .missingNutrients
+                                    .map(x => (
+                                        <p key={x}>
+                                            • {x}
+                                        </p>
+                                    ))}
+                            </div>
+                        </div>
+                    )
+                }
+
             </CardContent>
         </Card>
     );
