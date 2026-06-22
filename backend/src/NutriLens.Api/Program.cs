@@ -25,8 +25,20 @@ builder.Services.AddScoped<ICoverageService, CoverageService>();
 builder.Services.AddScoped<IDailyNutritionService,DailyNutritionService>();
 builder.Services.AddScoped<ITrendService,TrendService>();
 builder.Services.AddScoped<IGapRecommendationService, GapRecomendationService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "Frontend",
+        policy =>
+        {
+            policy
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin();
+        });
+});
 var app = builder.Build();
-
+app.UseCors("Frontend");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
