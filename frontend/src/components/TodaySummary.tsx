@@ -16,7 +16,7 @@ export default function TodaySummary({
     return (
         <section className="space-y-4">
             <div>
-                <h2 className="text-3xl font-bold">Today's Nutrition</h2>
+                <h2 className="text-3xl font-bold">Today&apos;s Nutrition</h2>
                 <p className="text-muted-foreground">
                     Understand what your body is missing,
                     not just what you ate.

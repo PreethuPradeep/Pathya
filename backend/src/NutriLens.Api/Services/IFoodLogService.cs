@@ -6,5 +6,7 @@ namespace Pathya.Api.Services
     {
         Task AddFoodAsync(CreateFoodLogDto request);
         Task<List<ConsumeNutrientDto>> GetConsumedNutrientsAsync(int userId);
+        Task<List<FoodLogItemDto>>GetTodaysFoodLogAsync(int userId);
+        Task DeleteFoodLogItemAsync(int itemId);
     }
 }

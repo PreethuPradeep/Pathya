@@ -80,5 +80,40 @@ namespace Pathya.Api.Services
             //    }).ToList();
             return await _dailyNutritionService.GetDailyNutrientsAsync(userId, DateOnly.FromDateTime(DateTime.Today));
         }
+
+        public async Task<List<FoodLogItemDto>> GetTodaysFoodLogAsync(int userId)
+        {
+            var today = DateOnly.FromDateTime(DateTime.Today);
+            return await _context.FoodLogItems
+                .Include(x => x.Food)
+                .Include(x => x.FoodLog)
+                .Where(x => x.FoodLog.UserId == userId && x.FoodLog.Date == today)
+                .Select(x => new FoodLogItemDto
+                {
+                    Id = x.Id,
+                    Food = x.Food.Name,
+                    Quantity = x.Quantity,
+                    WeightInGrams = x.WeightInGrams
+                })
+                .ToListAsync();
+        }
+
+        public async Task DeleteFoodLogItemAsync(int itemId)
+        {
+            var item =
+                await _context.FoodLogItems
+                    .FirstOrDefaultAsync(
+                        x => x.Id == itemId);
+
+            if (item == null)
+            {
+                throw new Exception(
+                    "Food log item not found");
+            }
+
+            _context.FoodLogItems.Remove(item);
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
