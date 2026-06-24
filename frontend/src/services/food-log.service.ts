@@ -1,4 +1,5 @@
 import { api } from "@/lib/api";
+import { getUserId } from "@/lib/user";
 import { CreateFoodLog } from "@/types/CreateFoodLog";
 import { FoodLogItem } from "@/types/FoodLogItem";
 
@@ -9,10 +10,9 @@ export async function addFoodLog(
 }
 
 export async function getTodaysFoodLog() {
-
-    const response =
-        await api.get<FoodLogItem[]>(
-            "/users/1/food-log"
+    const userId = getUserId();
+    const response = await api.get<FoodLogItem[]>(
+            `/users/${userId}/food-log`
         );
 
     return response.data;

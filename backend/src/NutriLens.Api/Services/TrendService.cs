@@ -27,19 +27,34 @@ namespace Pathya.Api.Services
             var currentWeekStart = DateOnly.FromDateTime(DateTime.Today.AddDays(-6));
             var previousWeekStart = DateOnly.FromDateTime(DateTime.Today.AddDays(-13));
             var previousWeekEnd = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+            var today = DateOnly.FromDateTime(DateTime.Today);
+
+            var dailyNutrition =
+                await _dailyNutritionService
+                    .GetDailyNutrientsForRangeAsync(
+                        userId,
+                        previousWeekStart,
+                        today);
+
             foreach( var requirement in requirements)
             {
                 decimal currentWeekTotal = 0;
                 decimal previousWeekTotal = 0;
-                for (var date = currentWeekStart; date <= DateOnly.FromDateTime(DateTime.Today) ; date = date.AddDays(1))
+                for (var date = currentWeekStart; date <= today ; date = date.AddDays(1))
                 {
-                    var nutrients = await _dailyNutritionService.GetDailyNutrientsAsync(userId, date);
-                    currentWeekTotal += nutrients.FirstOrDefault(x => x.Nutrient == requirement.Nutrient)?.Amount ?? 0;
+                    currentWeekTotal +=
+                        DailyNutritionHelpers.GetNutrientAmount(
+                            dailyNutrition,
+                            date,
+                            requirement.Nutrient);
                 }
                 for (var date = previousWeekStart; date <= previousWeekEnd; date = date.AddDays(1))
                 {
-                    var nutrients = await _dailyNutritionService.GetDailyNutrientsAsync(userId, date);
-                    previousWeekTotal += nutrients.FirstOrDefault(x => x.Nutrient == requirement.Nutrient)?.Amount ?? 0;
+                    previousWeekTotal +=
+                        DailyNutritionHelpers.GetNutrientAmount(
+                            dailyNutrition,
+                            date,
+                            requirement.Nutrient);
                 }
                 var currentAverage = currentWeekTotal / 7;
                 var previousAverage = previousWeekTotal / 7;

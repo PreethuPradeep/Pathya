@@ -4,4 +4,5 @@ export interface Trend {
     currentWeekAverage: number;
     changePercent: number;
     trend: string;
+    insight: string;
 }

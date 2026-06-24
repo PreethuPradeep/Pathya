@@ -45,6 +45,13 @@ export default function Dashboard() {
 
 
     useEffect(() => {
+            async function loadFoodLog()
+        {
+            const data =
+                await getTodaysFoodLog();
+
+            setFoodLog(data);
+        }
     async function loadData() {
         try {
             const [
@@ -63,7 +70,7 @@ export default function Dashboard() {
             setInsights(insightsData);
             setCoverage(coverageData);
             setTrends(trendsData);
-            setFoodLog(foodLogData);
+            loadFoodLog();
         }
         catch (err) {
             console.error(err);
@@ -82,8 +89,8 @@ export default function Dashboard() {
     ) {
         await deleteFoodLogItem(id);
 
-        setFoodLog(
-            foodLog.filter(
+        setFoodLog(current =>
+            current.filter(
                 x => x.id !== id
             )
         );

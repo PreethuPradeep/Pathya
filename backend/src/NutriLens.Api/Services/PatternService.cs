@@ -1,22 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Pathya.Api.Data;
+﻿using Pathya.Api.Data;
 using Pathya.Api.DTOs;
-using Pathya.Api.Entities;
 
 namespace Pathya.Api.Services
 {
     public class PatternService : IPatternService
     {
-        private readonly ApplicationDbContext _context;
         private readonly IRequirementService _requirementService;
         private readonly IDailyNutritionService _dailyNutritionService;
 
         public PatternService(
-            ApplicationDbContext context,
             IRequirementService requirementService,
             IDailyNutritionService dailyNutritionService)
         {
-            _context = context;
             _requirementService = requirementService;
             _dailyNutritionService = dailyNutritionService;
         }
@@ -38,14 +33,24 @@ namespace Pathya.Api.Services
                 DateOnly.FromDateTime(
                     DateTime.Today);
 
+            var dailyNutrition =
+                await _dailyNutritionService
+                    .GetDailyNutrientsForRangeAsync(
+                        userId,
+                        startDate,
+                        endDate);
+
             foreach( var requirement in requirements)
             {
                 var daysBelowTarget = 0;
                 for ( var date = startDate; date <= endDate; date = date.AddDays(1))
                 {
-                    var nutrients = await _dailyNutritionService.GetDailyNutrientsAsync(userId, date);
-                    var consumed = nutrients.FirstOrDefault(x => x.Nutrient == requirement.Nutrient);
-                    var amountConsumed = consumed?.Amount ?? 0;
+                    var amountConsumed =
+                        DailyNutritionHelpers.GetNutrientAmount(
+                            dailyNutrition,
+                            date,
+                            requirement.Nutrient);
+
                     if (amountConsumed < requirement.RequiredAmount)
                     {
                         daysBelowTarget++;

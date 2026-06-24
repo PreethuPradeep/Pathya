@@ -29,8 +29,28 @@ namespace Pathya.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFoodLogItem(int id)
         {
+            if (GetFoods == null)
+            {
+                return NotFound();
+            }
             await _foodLogService.DeleteFoodLogItemAsync(id);
             return Ok();
+        }
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchFoods(string query)
+        {
+            var foods =
+                await _context.Foods
+                    .Where(x =>
+                        x.Name
+                            .ToLower()
+                            .Contains(
+                                query.ToLower()))
+                    .OrderBy(x => x.Name)
+                    .Take(20)
+                    .ToListAsync();
+
+            return Ok(foods);
         }
     }
 }

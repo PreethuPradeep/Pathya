@@ -12,6 +12,10 @@ export default function TrendCard({
         trend.trend === "Improving" ||
         trend.trend === "Strongly Improving";
 
+    const isDeclining =
+        trend.trend === "Declining" ||
+        trend.trend === "Strongly Declining";
+
     return (
         <div className="border rounded-lg p-4">
 
@@ -19,14 +23,40 @@ export default function TrendCard({
                 {trend.nutrient}
             </h3>
 
-            <p className="text-2xl font-bold">
-                {isImproving ? "↑" : "↓"}
-                {" "}
-                {Math.abs(trend.changePercent)}%
-            </p>
+            {
+                trend.trend === "New Intake"
+                    ? (
+                        <p className="text-2xl font-bold">
+                            NEW
+                        </p>
+                    )
+                    : trend.trend === "Stable"
+                        ? (
+                            <p className="text-2xl font-bold">
+                                →
+                                {" "}
+                                0%
+                            </p>
+                        )
+                        : (
+                            <p className="text-2xl font-bold">
+                                {isImproving
+                                    ? "↑"
+                                    : "↓"}
+                                {" "}
+                                {Math.abs(
+                                    trend.changePercent
+                                )}%
+                            </p>
+                        )
+            }
 
             <p>
                 {trend.trend}
+            </p>
+
+            <p className="text-sm text-muted-foreground mt-2">
+                {trend.insight}
             </p>
 
         </div>

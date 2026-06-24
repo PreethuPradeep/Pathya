@@ -19,14 +19,14 @@ namespace Pathya.Api.Services
             var missing = analysis.Where(x => x.PercentageMet < 100)
                 .Select(x => x.Nutrient)
                 .ToList();
-            var percentage = tracked == 0 ? 0 : (decimal)met / tracked * 100;
+            var percentage = analysis.Any()? analysis.Average(x => x.PercentageMet): 0;
             return new NutritionCoverageDto
             {
                 TrackedNutrients = tracked,
                 MetNutrients = met,
                 CoveragePercentage =
                     Math.Round(
-                        percentage,
+                        (decimal)percentage,
                         2),
 
                 MissingNutrients =

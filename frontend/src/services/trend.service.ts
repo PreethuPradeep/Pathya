@@ -1,11 +1,10 @@
 import { api } from "@/lib/api";
+import { getUserId } from "@/lib/user";
 import { Trend } from "@/types/Trend";
 
 export async function getTrends() {
-    const response =
-        await api.get<Trend[]>(
-            "/users/1/trends"
-        );
+    const userId = getUserId();
+    const response = await api.get<Trend[]>(`/users/${userId}/trends`);
 
     return response.data;
 }

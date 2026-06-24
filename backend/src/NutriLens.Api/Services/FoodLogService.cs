@@ -107,7 +107,7 @@ namespace Pathya.Api.Services
 
             if (item == null)
             {
-                throw new Exception(
+                throw new KeyNotFoundException(
                     "Food log item not found");
             }
 

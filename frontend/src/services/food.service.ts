@@ -5,3 +5,14 @@ export async function getFoods(){
     const response = await api.get<Food[]>("/api/foods");
     return response.data;
 }
+
+export async function searchFoods(
+    query: string
+) {
+    const response =
+        await api.get<Food[]>(
+            `/api/foods/search?query=${query}`
+        );
+
+    return response.data;
+}
