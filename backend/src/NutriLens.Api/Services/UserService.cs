@@ -52,5 +52,24 @@ namespace Pathya.Api.Services
                 })
                 .FirstOrDefaultAsync();
         }
+
+        public async Task UpdateUserAsync(int id, UpdateUserDto request)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                throw new Exception("User not found!");
+            }
+
+            user.DateOfBirth = request.DateOfBirth;
+            user.Gender = request.Gender;
+            user.IsPregnant = request.IsPregnant;
+            user.IsBreastfeeding = request.IsBreastfeeding;
+            user.HeightCm = request.HeightCm;
+            user.WeightKg = request.WeightKg;
+            user.ActivityLevel = request.ActivityLevel;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

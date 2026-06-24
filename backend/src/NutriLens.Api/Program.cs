@@ -388,5 +388,18 @@ app.MapGet(
 
         return Results.Ok(user);
     });
+app.MapPut(
+    "/users/{id}",
+    async (
+        int id,
+        UpdateUserDto request,
+        IUserService service) =>
+    {
+        await service.UpdateUserAsync(
+            id,
+            request);
+
+        return Results.Ok();
+    });
 app.MapControllers();
 app.Run();

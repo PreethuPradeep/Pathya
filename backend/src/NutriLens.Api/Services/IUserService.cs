@@ -7,5 +7,6 @@ namespace Pathya.Api.Services
         Task<int> CreateUserAsync(CreateUserDto request);
 
         Task<UserDto?> GetUserAsync(int userId);
+        Task UpdateUserAsync(int id, UpdateUserDto request);
     }
 }
