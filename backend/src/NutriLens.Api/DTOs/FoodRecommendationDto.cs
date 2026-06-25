@@ -2,6 +2,7 @@
 {
     public class FoodRecommendationDto
     {
+        public int FoodId { get; set; }
         public string Food { get; set; } = string.Empty;
 
         public decimal Amount { get; set; }

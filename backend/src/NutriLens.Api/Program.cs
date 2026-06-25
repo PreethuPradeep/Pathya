@@ -27,6 +27,7 @@ builder.Services.AddScoped<IDailyNutritionService,DailyNutritionService>();
 builder.Services.AddScoped<ITrendService,TrendService>();
 builder.Services.AddScoped<IGapRecommendationService, GapRecomendationService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<INutritionHistory, NutritionHistoryService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -400,6 +401,24 @@ app.MapPut(
             request);
 
         return Results.Ok();
+    });
+app.MapGet(
+    "/users/{id}/food-history",
+    async (
+        int id,
+        IFoodLogService service) =>
+    {
+        return Results.Ok(
+            await service
+                .GetFoodHistoryAsync(id));
+    });
+app.MapGet(
+    "/users/{id}/nutrition-history",
+    async (
+        int id,
+        [FromServices] INutritionHistory service) =>
+    {
+        return Results.Ok(await service.GetNutritionHistoryAsync(id));
     });
 app.MapControllers();
 app.Run();

@@ -115,5 +115,20 @@ namespace Pathya.Api.Services
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<FoodHistoryDto>> GetFoodHistoryAsync(int userId)
+        {
+            return await _context.FoodLogItems.Include(x => x.Food)
+                .Include(x => x.FoodLog)
+                .Where(x => x.FoodLog.UserId == userId)
+                .OrderByDescending(x => x.FoodLog.Date)
+                .Select(x => new FoodHistoryDto
+                {
+                    Date = x.FoodLog.Date,
+                    Food = x.Food.Name,
+                    Quantity = x.Quantity,
+                    WeightInGrams = x.WeightInGrams
+                }).ToListAsync();
+        }
     }
 }

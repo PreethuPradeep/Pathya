@@ -16,6 +16,8 @@ import AppShell from "@/components/AppShell";
 import { FoodLogItem } from "@/types/FoodLogItem";
 import TodaysFoodLog from "@/components/TodaysFoodLog";
 import {deleteFoodLogItem} from "@/services/food-log.service";
+import RequireUser from "@/components/RequireUser";
+import DashboardHeader from "@/components/DashboardHeader";
 
 export default function Dashboard() {
     const [insights, setInsights] = useState<Insight[]>([]);
@@ -45,13 +47,7 @@ export default function Dashboard() {
 
 
     useEffect(() => {
-            async function loadFoodLog()
-        {
-            const data =
-                await getTodaysFoodLog();
 
-            setFoodLog(data);
-        }
     async function loadData() {
         try {
             const [
@@ -70,7 +66,7 @@ export default function Dashboard() {
             setInsights(insightsData);
             setCoverage(coverageData);
             setTrends(trendsData);
-            loadFoodLog();
+            setFoodLog(foodLogData);
         }
         catch (err) {
             console.error(err);
@@ -86,15 +82,49 @@ export default function Dashboard() {
 
     async function handleDelete(
     id: number
-    ) {
-        await deleteFoodLogItem(id);
+        ) {
+            try {
 
-        setFoodLog(current =>
-            current.filter(
-                x => x.id !== id
-            )
-        );
-    }
+                await deleteFoodLogItem(id);
+                 await refreshDashboard();
+                const updated =
+                    await getTodaysFoodLog();
+
+                setFoodLog(updated);
+
+            }
+            catch (err) {
+
+                console.error(err);
+
+                alert(
+                    "Failed to delete food."
+                );
+            }
+        }
+        async function refreshDashboard()
+        {
+            const [
+                insightsData,
+                coverageData,
+                trendsData,
+                foodLogData
+            ] =
+            await Promise.all([
+                getInsights(),
+                getCoverage(),
+                getTrends(),
+                getTodaysFoodLog()
+            ]);
+
+            setInsights(insightsData);
+            setCoverage(coverageData);
+            setTrends(trendsData);
+            setFoodLog(foodLogData);
+        }
+        useEffect(() => {
+            refreshDashboard();
+        }, []);
     if (loading) {
         return (
             <main>
@@ -114,6 +144,7 @@ export default function Dashboard() {
     }
 
     return (
+        <RequireUser>
         <AppShell>
             <main className="max-w-6xl mx-auto p-8 space-y-8">
 
@@ -127,7 +158,9 @@ export default function Dashboard() {
                         not just what you ate.
                     </p>
                 </section>
-
+                <DashboardHeader
+                    coverage={coverage}
+                />
                 {coverage && (
                     <TodaySummary
                         insights={insights}
@@ -167,5 +200,6 @@ export default function Dashboard() {
 
             </main>
         </AppShell>
+        </RequireUser>
     );
 }
